@@ -8,6 +8,8 @@
 		</h1>
 		<p class="subtitle">
 			ID: {{ venue.id }}
+			<a href="/venues/{{venue.id}}/edit" style="font-size: 20px;"><span class="genre" style="color: black;">Edit</span></a>
+			<a href="" style="font-size: 20px;" id="delete"><span class="genre" style="color: black;">Delete</span></a>
 		</p>
 		<div class="genres">
 			{% for genre in venue.genres %}
@@ -74,6 +76,22 @@
 		{% endfor %}
 	</div>
 </section>
+
+<script>
+	window.onload = function () {
+		const deleteBtn = document.getElementById('delete');
+		deleteBtn.onclick = function (e) {
+			e.preventDefault();
+			fetch('/venues/{{venue.id}}', {
+				method: 'DELETE'
+			})
+			.then(response => response.json())
+			.then(function (response) {
+				window.location.href = response.redirect;			
+			})
+		}
+	}
+</script>
 
 {% endblock %}
 

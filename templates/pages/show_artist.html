@@ -1,6 +1,7 @@
 {% extends 'layouts/main.html' %}
 {% block title %}{{ artist.name }} | Artist{% endblock %}
 {% block content %}
+
 <div class="row">
 	<div class="col-sm-6">
 		<h1 class="monospace">
@@ -8,6 +9,8 @@
 		</h1>
 		<p class="subtitle">
 			ID: {{ artist.id }}
+			<a href="/artists/{{artist.id}}/edit" style="font-size: 20px;"><span class="genre" style="color: black;">Edit</span></a>
+			<a href="" style="font-size: 20px;" id="delete"><span class="genre" style="color: black;">Delete</span></a>
 		</p>
 		<div class="genres">
 			{% for genre in artist.genres %}
@@ -71,6 +74,25 @@
 		{% endfor %}
 	</div>
 </section>
+
+<script>
+	window.onload = function () {
+		const deleteBtn = document.getElementById('delete');
+		deleteBtn.onclick = function (e) {
+			e.preventDefault();
+			fetch('/artists/{{artist.id}}', {
+				method: 'DELETE'
+			})
+			.then(response => response.json())
+			.then(function (response) {
+				console.log(response)
+				if (response) {
+					window.location.href = response.redirect;
+				}
+			});
+		}
+	}
+</script>
 
 {% endblock %}
 
